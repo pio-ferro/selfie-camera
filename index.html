@@ -3,42 +3,125 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selfie Camera</title>
     <style>
         body {
-            margin: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: #000;
+            min-height: 100vh;
+            /* Deep Dark Teal Gradient */
+            background: linear-gradient(135deg, #021B1A, #053a3a, #004d40);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+
+
+        .glass-panel {
+            /* Dark Glass Effect */
+            background: rgba(10, 30, 30, 0.6);
+            /* Darker, teal-tinted glass */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            /* Cyan border */
+            border-radius: 20px;
+            padding: 40px;
+            /* Glowing Cyan Shadow */
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2),
+                0 0 40px rgba(0, 255, 255, 0.1),
+                inset 0 0 20px rgba(0, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            max-width: 90%;
+            width: 500px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        h1 span {
+            color: #FFD700;
+            /* Yellow highlight for specific words if needed, applying to whole text for now or via span in HTML */
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .video-container {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(0, 255, 255, 0.2);
         }
 
         video {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            display: block;
+            transform: scaleX(-1);
+        }
+
+        .welcome-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .chief-guest-text {
+            color: #FFD700;
+            /* Yellow */
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
     </style>
 </head>
 
 <body>
 
-    <video id="camera" autoplay playsinline></video>
+
+    <div class="glass-panel">
+        <h1 class="chief-guest-text">You are the Chief Guest</h1>
+
+        <div class="video-container">
+            <video id="camera" autoplay playsinline></video>
+        </div>
+
+        <div class="welcome-text">Welcome to Alfrah Cognix</div>
+    </div>
 
     <script>
         const video = document.getElementById('camera');
 
-        navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "user" }, // Front camera
-            audio: false
-        })
-            .then(stream => {
-                video.srcObject = stream;
+        // Check if browser supports getUserMedia
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: "user" },
+                audio: false
             })
-            .catch(err => {
-                alert("Camera access denied!");
-            });
+                .then(stream => {
+                    video.srcObject = stream;
+                })
+                .catch(err => {
+                    console.error("Error accessing camera: ", err);
+                    alert("Camera access denied or not available. Please allow camera permissions.");
+                });
+        } else {
+            alert("Your browser does not support camera access.");
+        }
     </script>
 
 </body>
